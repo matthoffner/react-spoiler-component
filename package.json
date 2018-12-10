@@ -1,0 +1,12 @@
+{
+  "name": "react-spoiler-component",
+  "version": "0.0.1",
+  "description": "Helper component for progressive rendering",
+  "main": "src/index.js",
+  "author": "Matt Hoffner",
+  "license": "MIT",
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3"
+  }
+}
