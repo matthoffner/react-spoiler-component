@@ -1,6 +1,6 @@
-# react-spoiler-component
+ react-spoiler-component
 
-React spoiler component allows you to server render html and support removing the html after client rendering. Warning, this is pretty hacky and will eventually be done much better in future versions of React.
+React spoiler component is a component API that allows you to manage a server rendered loading component with a suspended one.
 
 Using a Spoiler Component provides a more immediate loading experience for pages with dynamic imports or slow network calls.
 
@@ -11,33 +11,32 @@ yarn add react-spoiler-component
 ```
 
 ```
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, Suspense } from 'react';
 import { bool, func } from 'prop-types';
-import Spoiler from 'react-async-component';
-import SuspenseModal from './suspense-modal';
+import Spoiler from 'react-spoiler-component ';
+import SlowComponent from './slow-component';
 
-const Skeleton = "<div>Loading...</div>";
+const LoadingComponent = "<div>Loading...</div>";
 
-export default class Modal extends Component {
+export default class SlowComponentLoader extends Component {
     static propTypes = {
         fetchModal: func,
-        showModal: bool
+        slowComponentIsLoaded: bool
     };
     componentDidMount() {
         this.props.fetchModal();
     }
     render() {
         return (
-            <Fragment>
-                <div data-spoiler-component="spoiler">
-                    <Spoiler
-                        html={Skeleton}
-                        selector={'[data-spoiler-component=spoiler]'}
-                        live={this.props.showModal}
-                    />
-                </div>
-                <SuspenseModal />
-            </Fragment>
+            <Spoiler
+                shell={<LoadingComponent />}
+                selector={'loading-component-id'}
+                live={this.props.slowComponentIsLoaded}
+            >
+                <Suspense fallback={<LoadingComponent />}> 
+                    <SlowComponent />
+                </Suspense>
+            </Spoiler>
         );
     }
 }
@@ -49,7 +48,7 @@ export default class Modal extends Component {
 
 ### Prop Types
 
-- `html` - html string that is server rendered
+- `shell` - react component placeholder that will be server rendered
 - `selector` - top level selector that is removed after rendering
 - `live` - boolean for determining when component is loaded
 - `delayMs` - transition time for removing spoiler component, default is 1000ms
