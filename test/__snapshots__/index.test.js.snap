@@ -1,57 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`No prop type errors 1`] = `
-<div
-  dangerouslySetInnerHTML={
-    Object {
-      "__html": "
-  if (document) {
-    const isLive = false;
-    const node = document.querySelector('test');
-    if (node && isLive) {
-      setTimeout(() => {
-        node.innerHTML = \\"\\";
-      }, 1000);
-    }
-  }",
-    }
-  }
+<Spoiler
+  path="./test/component.js"
+  selector="test"
 >
-  <div
-    id="test"
-  >
-    Loading...
-  </div>
-</div>
-`;
-
-exports[`Shows loading for expected duration 1`] = `
-<div
-  dangerouslySetInnerHTML={
-    Object {
-      "__html": "
-  if (document) {
-    const isLive = false;
-    const node = document.querySelector('test');
-    if (node && isLive) {
-      setTimeout(() => {
-        node.innerHTML = \\"\\";
-      }, 1000);
-    }
-  }",
-    }
-  }
->
-  <div
-    id="test"
-  >
-    Loading...
-  </div>
-</div>
-`;
-
-exports[`Shows loading for expected duration 2`] = `
-<div>
-  Loaded!
-</div>
+  <Loading />
+</Spoiler>
 `;

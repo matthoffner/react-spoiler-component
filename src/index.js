@@ -1,35 +1,24 @@
-import React, { Fragment } from "react";
-import { bool, node, number, string } from "prop-types";
+import React, { Fragment, lazy, Suspense } from "react";
+import { node, string } from "prop-types";
 
-function Spoiler({ delayMs, children, live, selector, shell }) {
-  const script = `
-  if (document) {
-    const isLive = ${live};
-    const node = document.querySelector('${selector}');
-    if (node && isLive) {
-      setTimeout(() => {
-        node.innerHTML = "";
-      }, ${delayMs});
-    }
-  }`;
+export default function Spoiler({ children, path, selector }) {
   return (
     <Fragment>
-      {!live && <div dangerouslySetInnerHTML={{ __html: script }}>
-        {shell}
-      </div>}
-      {children}
-    </Fragment >
+      <div id={selector}>{children}</div>
+      <Suspense fallback={null}>
+        {lazy(() => import(() => `'/* webpackChunkName: "${selector}" */ '${path}'`).then(() => {
+          if (document) {
+            const node = document.querySelector(selector);
+            node.innerHTML = "";
+          }
+        }))}
+      </Suspense>
+    </Fragment>
   );
 }
-Spoiler.propTypes = {
-  delayMs: number,
-  children: node.isRequired,
-  live: bool.isRequired,
-  selector: string.isRequired,
-  shell: node.isRequired
-};
-Spoiler.defaultProps = {
-  delayMs: 1000
-};
 
-export default Spoiler;
+Spoiler.propTypes = {
+  children: node.isRequired,
+  path: string.isRequired,
+  selector: string.isRequired
+};

@@ -1,8 +1,6 @@
  react-spoiler-component
 
-React spoiler component is a component API that allows you to manage a server rendered loading component with a suspended one.
-
-Using a Spoiler Component provides a more immediate loading experience for pages with dynamic imports or slow network calls.
+WIP Server render wrapper for React Suspense and lazy
 
 ## Usage:
 
@@ -11,34 +9,21 @@ yarn add react-spoiler-component
 ```
 
 ```
-import React, { Component, Fragment, Suspense } from 'react';
-import { bool, func } from 'prop-types';
-import Spoiler from 'react-spoiler-component ';
+import React from 'react';
 import SlowComponent from './slow-component';
 
-const LoadingComponent = "<div>Loading...</div>";
+function LoadingComponent() {
+    return (
+        <div>Loading...</div>
+    );
+}
 
-export default class SlowComponentLoader extends Component {
-    static propTypes = {
-        fetchModal: func,
-        slowComponentIsLoaded: bool
-    };
-    componentDidMount() {
-        this.props.fetchModal();
-    }
-    render() {
-        return (
-            <Spoiler
-                shell={<LoadingComponent />}
-                selector={'loading-component-id'}
-                live={this.props.slowComponentIsLoaded}
-            >
-                <Suspense fallback={<LoadingComponent />}> 
-                    <SlowComponent />
-                </Suspense>
-            </Spoiler>
-        );
-    }
+export default function SlowComponentLoader() {
+    return (
+        <Spoiler path="./slow-component-to-load" selector="loading-component-selector">
+            <LoadingComponent />
+        </Spoiler>
+    );
 }
 ```
 
@@ -48,10 +33,8 @@ export default class SlowComponentLoader extends Component {
 
 ### Prop Types
 
-- `shell` - react component placeholder that will be server rendered
 - `selector` - top level selector that is removed after rendering
-- `live` - boolean for determining when component is loaded
-- `delayMs` - transition time for removing spoiler component, default is 1000ms
+- `path` - path of component that is passed to lazy and rendered
 
 ## Inspiration:
 
