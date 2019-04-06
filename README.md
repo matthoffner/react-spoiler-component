@@ -11,6 +11,7 @@ yarn add react-spoiler-component
 ```
 import React from 'react';
 import SlowComponent from './slow-component';
+import Spoiler from 'react-spoiler-component';
 
 function LoadingComponent() {
     return (
@@ -26,10 +27,6 @@ export default function SlowComponentLoader() {
     );
 }
 ```
-
-## How it works
-
-`SpoilerComponent` is just a server rendered component with a promise that only runs on the client. If the prop set as `live` is true and the server rendered component is loaded then the innerHTML gets cleared.
 
 ### Prop Types
 

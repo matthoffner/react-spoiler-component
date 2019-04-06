@@ -6,10 +6,12 @@ export default function Spoiler({ children, path, selector }) {
     <Fragment>
       <div id={selector}>{children}</div>
       <Suspense fallback={null}>
-        {lazy(() => import(() => `'/* webpackChunkName: "${selector}" */ '${path}''`).then(() => {
-          const node = document.querySelector(selector);
-          node.innerHTML = "";
-        }))}
+        {lazy(() => import(() => `"/* webpackChunkName: '${selector}' */ '${path}'"`)
+          .then(() => {
+            const node = document.querySelector(selector);
+            node.innerHTML = "";
+          }))
+        }
       </Suspense>
     </Fragment>
   );
